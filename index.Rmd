@@ -1,7 +1,14 @@
 ---
-title: "Index"
+title: "IODS Final Project"
 author: "Temesgen"
-date: "December 11, 2017"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
+    fig_caption: yes
+    fig_height: 4
+    fig_width: 6
+    theme: journal
+    toc: yes
+    toc_depth: 2
 ---
 *Final Assignment*
