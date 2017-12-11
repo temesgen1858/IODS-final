@@ -1,6 +1,8 @@
 ---
 title: "IODS Final Project"
-author: "Temesgen"
+author: "Abera Temesgen"
+date: "15 December 2017"
+e-mail: "temesgen.abera@helsinki.fi"
 output:
   html_document:
     code_folding: hide
