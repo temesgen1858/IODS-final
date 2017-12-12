@@ -1,8 +1,10 @@
 ---
 title: "IODS Final Project"
 author: "Abera Temesgen"
+email: "temesgen.abera@helsinki.fi"
 date: "15 December 2017"
-e-mail: "temesgen.abera@helsinki.fi"
+
+
 output:
   html_document:
     code_folding: hide
@@ -17,6 +19,13 @@ output:
 
 ***
 
-*Final Assignment*
+*Welcome to my final assignment page. In this exercise, I will do linear and logistic regression, and principal component analysis using Boston data from the MASS package*
 
-*Introducion*
+
+***
+
+```{r child = "Chapter1.Rmd"}
+
+```
+
+***

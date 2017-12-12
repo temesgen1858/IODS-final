@@ -1,0 +1,205 @@
+
+# Linear and logistic regression, and Principal Component Analysis using Boston data
+## Data description
+
+The Boston data contain infromation about housing values in the suburbs of Boston, USA. There are 506 observations of 14 variables in the dataset.The variables are:
+
+**crim**- per capita crime rate by town.
+
+**zn** - proportion of residential land zoned for lots over 25,000 sq.ft.
+
+**indus**- proportion of non-retail business acres per town.
+
+**chas** - Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+
+**nox** - nitrogen oxides concentration (parts per 10 million).
+
+**rm** - average number of rooms per dwelling.
+
+**age** - proportion of owner-occupied units built prior to 1940.
+
+**dis** - weighted mean of distances to five Boston employment centres.
+
+**rad** - index of accessibility to radial highways.
+
+**tax** - full-value property-tax rate per $10,000.
+
+**ptratio**- pupil-teacher ratio by town.
+
+**black** -1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
+
+**lstat** -lower status of the population (percent).
+
+**medv** -median value of owner-occupied homes in $1000s.
+
+
+**For the linear and logistic regression, we'll use the wrangled data from the local folder**
+
+
+*Read data from local folder*
+
+```{r}
+Boston_analysis <-read.table("D:/final_assignment/IODS-final/boston_new.csv",sep = ";", header = TRUE)
+df<- Boston_analysis
+str(df)
+dim(df)
+
+```
+
+##Linear regression analysis
+
+*Build the regression model and print the summary*
+
+```{r}
+model=lm(crim~lstat+rad+tax, data=df)
+summary(model)
+```
+The results of the regression show that the "lstat"" and "rad" have statistically significant (P<0.05) and positive relation with crime whereas tax does not. Therefore let's re-run the model by removing the statistically insignificant variable (tax).
+
+```{r}
+model=lm(crim~lstat+rad, data=df)
+summary(model)
+```
+
+Now, the regression result can be written as: **crim = 0.52281xrad + 0.23728xlstat - 4.38141** (i.e, For a unit increase in "rad" and "lstat" the crime rate will increase by 0.52281 and 0.23728, respectively). The F-statistics value(182.7) also increased after removing the insignificant variable("tax")  and it's value is quiet larger than 1 indicating that a relation exisits between the dependent and predictor variabels and it's enough to rejevt the null hypothesis. Moreover,larger t values (5.065 and 13.607 stadard deviation) further suggests rejection of the null hypothesis.
+
+As the residul standard error indicates the model prediction (crime rate) can deviate by 6.559 from the actual value. Also, the multiple r-square shows that model fits the data only around 42.1% (0.421), meaning only 42.1% of the variance in crime percentage is explained by "rad" and "lstat" and hence the model shows relatively low performace. 
+ 
+Let's further check the validity of the linear regression model assumptions (normality, linearity, and influential value).
+
+
+```{r}
+
+plot(model,1)
+plot(model,2)
+plot(model,5)
+```
+
+The normal Q-Q plot shows that the standardized residuals do not show a linear diagonal relationship compared to an ideal normal observations and hence normality assumption of the data distribution is not conviencing. On the other hand, the residuals vs Fitted graphs shows that the linearity assumption holds true as the red line is fairly flat. 
+
+The residual vs leverage result displayed that the slope of the model is not affecetd by the influential points(381,419 and 406) as they are below 0.5 cook's distnace.
+
+
+Let's use another method (logistic regression) to anlyze the relationship again using the wrangled Boston data.
+
+First Let's state three hypothesis related to high_crim_rate
+
+*Hypothesis 1: Increase in the index of accessibility to radial highways favors high crime rate*
+
+*Hypothesis 2: Crime rates increase with high percentage of lower status of population* 
+
+*Hypothesis 3: Crime rates inrease in rich towns as indicated by their high property tax rate*
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+Boston_analysis <-read.table("D:/final_assignment/IODS-final/boston_new.csv",sep = ";", header = TRUE)
+df<-Boston_analysis
+#sumaries of the statstics and  plot (bar and box plot)
+summary(df)
+
+g1 <- ggplot(data=df,aes(x=high_crim_rate))
+g1+geom_bar()+xlab("High crime rate")
+g2 <- ggplot(data=df,aes(x=rad))
+g2 + geom_bar()+xlab("Radial highway accessability index")
+g3 <- ggplot(data=df,aes(x=high_crim_rate,y=lstat))
+g3 + geom_boxplot()+ylab("% of lower status population") + xlab("High crime rate")
+  
+```
+
+The statistical summaries shows the minimum, maximum, the median, the 1st and 2nd quantiles. The crim rate shows big difference between towns(e.g from 0.00632 to Max 88.97).As the bar plot indicates,more than 100 towns have radial highway accessability index of 4, 5 and 24 whereas all the rest of towns have below 4. 
+
+With high crime rate(True), the % of lower status population is high. Similarly low crime rate is noticed in towns with small % of lower class population.
+
+Around 200 towns have morethan 50% crime rate whereas most towns(around 300) have lower crime rate, i.e. less than 50%. 
+
+##Logistic regression analysis
+
+```{r}
+#Logistic regression to test the hypothesis
+
+m2 <- glm(high_crim_rate ~ rad + lstat + tax , data = Boston_analysis, family = "binomial")
+
+# print out a summary of the model
+summary(m2)
+# print out the coefficients of the model
+coef(m2)
+#print out the odd ration from coefficients of the model
+ODR <- coef(m2) %>% exp
+
+#compute confidence intervals (CI)
+CI <- confint(m2) %>% exp
+
+cbind(ODR, CI)
+
+# predict the probability of high_crim_rate
+probabilities <- predict(m2, type = "response")
+
+# add the predicted probabilities to 'Boston_analysis'
+Boston_analysis <- mutate(Boston_analysis, probability = probabilities)
+
+# use the probabilities to make a prediction of high_crim_rate
+Boston_analysis <- mutate(Boston_analysis, prediction = probability>0.5)
+
+# see the last thirty original classes, predicted probabilities, and class predictions
+dplyr::select(Boston_analysis, rad,lstat, high_crim_rate, probability, prediction) %>% tail(30)
+
+table(high_use = Boston_analysis$high_crim_rate, prediction = Boston_analysis$prediction )
+
+# Display graphically
+m3 <- ggplot(Boston_analysis, aes(x = probability, y=high_crim_rate, col=prediction))
+
+# define the geom as points and draw the plot
+m3+geom_point()
+
+# calculate training error
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+loss_func(class = Boston_analysis$high_crim_rate, prob = Boston_analysis$probability)
+
+
+```
+
+The result shows that all variables (rad, lstat and tax) have significant (P<0.05) and positive relationship with high crim rate supporting the hypothesis stated above. Forexample, a unit increase in "rad"" increases the probability of crime rate by 0.28
+
+The odd ratio for rad(1.324699623), lstat(1.083611632) and tax(1.003355867) shows that for a unit increase in rad, lstat and tax  the odds of crime rate increase by 32%,8% and 0.3%, respectively. This further supports the hypothesis. At 97.5% conidence interval, small values for both variables indicates that the precision of odd ratio is also good. 
+
+The models correctly predicts the high crime rate for 426 (286+ 140) observations from the total of 506. The model has an overall prediction error of around 15.8%, meaning the model commits prediction error of only 15.8%.   
+
+
+Now let's read the whole Boston data this time for the principal component analysis to reduce the number of dimensions
+
+##Principal Component Analysis
+
+```{r}
+library(dplyr)
+library(GGally)
+library(MASS)
+data("Boston")
+str(Boston)
+dim(Boston)
+#standardize the variables as principal componet analysis is sensitive to data scaling
+
+boston_std <- scale(Boston)
+pca_boston <- prcomp(boston_std)
+s <- summary(pca_boston)
+s
+pca_rou <- round(100*s$importance[2, ], digits = 1)
+
+# create object pc_lab to be used as axis labels
+pc_lab <- paste0(names(pca_rou), " (", pca_rou, "%)")
+
+# draw a biplot
+biplot(pca_boston, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab[1], ylab = pc_lab[2])
+#Lets gets the contributions of  variables to each each principla components from the loadings 
+pca_boston2 <- princomp(boston_std, cor=TRUE, score=TRUE)
+pca_boston2$loadings
+```
+
+The first and the second principal components reflects  46.8% and 11.8% of the total variations in the data, i.e. to get sense of the data we don't need to look all the 14 dimensions rather few dimensions can explain the variations in the data.
+
+The loadings show the individual contributions of the variables to each dimensions. In the biplot, the angle between arrows shows how much they are correlated, the smaller the angle the stronger the correlation is. Also, the direction of the arrows shows to which PC-axis they are more important. The length of the arrows shows the standard deviations from the mean value. The principal component analysis in general reduced the dimensionality of the data. Forexample, the first 9 Principal Components alone explain more than 94% of the total variance in the data.
