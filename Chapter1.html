@@ -139,6 +139,7 @@ $(document).ready(function () {
 <p><strong>lstat</strong> -lower status of the population (percent).</p>
 <p><strong>medv</strong> -median value of owner-occupied homes in $1000s.</p>
 <p><strong>For the linear and logistic regression, we’ll use the wrangled data from the local folder</strong></p>
+<p><strong>Link to data wrangling file</strong> <a href="https://github.com/temesgen1858/IODS-final/blob/master/data/data_wrangling.R" class="uri">https://github.com/temesgen1858/IODS-final/blob/master/data/data_wrangling.R</a></p>
 <p><em>Read data from local folder</em></p>
 <pre class="r"><code>Boston_analysis &lt;-read.table(&quot;D:/final_assignment/IODS-final/boston_new.csv&quot;,sep = &quot;;&quot;, header = TRUE)
 df&lt;- Boston_analysis
@@ -211,10 +212,6 @@ summary(model)</code></pre>
 <p>The normal Q-Q plot shows that the standardized residuals do not show a linear diagonal relationship compared to an ideal normal observations and hence normality assumption of the data distribution is not conviencing. On the other hand, the residuals vs Fitted graphs shows that the linearity assumption holds true as the red line is fairly flat.</p>
 <p>The residual vs leverage result displayed that the slope of the model is not affecetd by the influential points(381,419 and 406) as they are below 0.5 cook’s distnace.</p>
 <p>Let’s use another method (logistic regression) to anlyze the relationship again using the wrangled Boston data.</p>
-<p>First Let’s state three hypothesis related to high_crim_rate</p>
-<p><em>Hypothesis 1: Increase in the index of accessibility to radial highways favors high crime rate</em></p>
-<p><em>Hypothesis 2: Crime rates increase with high percentage of lower status of population</em></p>
-<p><em>Hypothesis 3: Crime rates inrease in rich towns as indicated by their high property tax rate</em></p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>

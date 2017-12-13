@@ -35,6 +35,7 @@ The Boston data contain infromation about housing values in the suburbs of Bosto
 
 **For the linear and logistic regression, we'll use the wrangled data from the local folder**
 
+**Link to data wrangling file** https://github.com/temesgen1858/IODS-final/blob/master/data/data_wrangling.R 
 
 *Read data from local folder*
 
@@ -82,13 +83,7 @@ The residual vs leverage result displayed that the slope of the model is not aff
 
 Let's use another method (logistic regression) to anlyze the relationship again using the wrangled Boston data.
 
-First Let's state three hypothesis related to high_crim_rate
 
-*Hypothesis 1: Increase in the index of accessibility to radial highways favors high crime rate*
-
-*Hypothesis 2: Crime rates increase with high percentage of lower status of population* 
-
-*Hypothesis 3: Crime rates inrease in rich towns as indicated by their high property tax rate*
 
 ```{r}
 library(dplyr)
