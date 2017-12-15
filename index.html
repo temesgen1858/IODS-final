@@ -143,11 +143,13 @@ $(document).ready(function () {
 <div id="TOC">
 <ul>
 <li><a href="#abstract">Abstract</a></li>
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#linear-and-logistic-regression-and-principal-component-analysis-using-boston-data">Linear and logistic regression, and Principal Component Analysis using Boston data</a><ul>
 <li><a href="#data-description">Data description</a></li>
 <li><a href="#linear-regression-analysis">Linear regression analysis</a></li>
 <li><a href="#logistic-regression-analysis">Logistic regression analysis</a></li>
 <li><a href="#principal-component-analysis">Principal Component Analysis</a></li>
+<li><a href="#conclusion-and-discussion">Conclusion and discussion</a></li>
 </ul></li>
 </ul>
 </div>
@@ -155,14 +157,20 @@ $(document).ready(function () {
 <hr />
 <div id="abstract" class="section level1">
 <h1>Abstract</h1>
+<p>In this assignment, it is attempted to determine whether there is a linear relationship between an independent variable(crime rate) and three explanatory variables(index of accessibility to radial highways, percentage of lower status of population, and property tax rate) utilizing readily availabe Boston data in r MASS package. Three statistical methods(Linear regression, logistic regression and Principal Component analysis) were used to carryout the analsyis. The regression result indicated that crime rate has linear, positive and statistically significant relation with index of accessibility to radial highways and percentage of lower status of population, with an r square of 0.42. Moreover, compared to the percentage of lower status of population, crime rate variation is more strongly explained by index of accessibility to radial highways in Boston. On the other hand,PCA analysis showed that the first and the second principal components reflects 46.8% and 11.8% of the total variations in the original boston data.</p>
 <hr />
 <hr />
-<p>*Welcome to my final assignment page. In this exercise, we will investigate weather there is a statistically significant relationship among per capita crime rate (in 506 towns in Boston ,USA), percentage of lower status of the population in the towns, and full-value property-tax rate per $10,000. Related to the research question, three hypothesis are stated as follows:</p>
-<p><em>Hypothesis 1: Increase in the index of accessibility to radial highways in towns favors high crime rate</em></p>
-<p><em>Hypothesis 2: Crime rates increase with high percentage of lower status of population</em></p>
-<p><em>Hypothesis 3: Crime rates inrease in rich towns as indicated by their high property tax rate</em></p>
-<p><em>To test these hypothesis, I will use linear and logistic regression analysis using Boston data from the MASS package</em></p>
-<p><em>Moreover, dimensionality of the original Boston data will be reduced using principal component anlysis at later section(see PCA)</em></p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Welcome to my final assignment page. In this exercise, we will investigate whether there is a meaningful relationship between per capita crime rate in 506-towns in Boston(USA), and percentage of lower status of the population in the towns and full-value property-tax rate. The data source will be from the Boston data in the r MASS package.</p>
+<p>Related to the research problem, three hypothesis are stated as follows:</p>
+<p><strong>Hypothesis 1: Increase in the index of accessibility to radial highways in towns favors high crime rate</strong></p>
+<p><strong>Hypothesis 2: Crime rates increase with high percentage of lower status of population</strong></p>
+<p><strong>Hypothesis 3: Crime rates inrease in rich towns as indicated by their high property tax rate</strong></p>
+<p>To test these hypothesis, I will use two statistical methods:linear and logistic regression. Linear regression is a statistical method to identify the extent to which there is a linear relationship between a dependent variable and one or more independent variabels. The independent variables are used to predict the values of the dependent(response) variable. The dependent variables must be measured on a continious measurement sale(i.g. 0-100) while the independent variable(s) can be measured on either a continous or categorical measurement scale. In order to qualify for linear regression, the data must satisfy some key assumptions:(1) there must be a linear relationship between the dependent variable and the independent variables, (2) independent variables are not highly correlated with each other, and (3) the variance of error terms are similar across the values of the independent variables.</p>
+<p>Logistics regressions is a special type of regression where binary response variable is related to a set of explanatory variables, which can be discrete and/or continuous.In logistic regression Probability or Odds of the response taking a particular value is modeled based on combination of values taken by the predictors.Logistic regression is applicable if we want to: classify individuals into two categories based on explanatory variables, predict probabilities that individuals fall into two categories of the binary response as a function of some explanatory variables, perform descriptive discriminate analyses such as describing the differences between individuals in separate groups as a function of explanatory variables, etc.</p>
+<p>Moreover, to reduce the dimensionality of the original Boston data, principal component anlysis (PCA) will be used at later section (see PCA). PCA is a dimension-reduction tool that can be used to reduce a large set of variables to a small set that still contains most of the information in the large set by transforming a number of correlated variables into a smaller number of uncorrelated variables called principal components.The first principal component accounts for as much of the variability in the data as possible, and each succeeding component accounts for as much of the remaining variability as possible.</p>
 <hr />
 </div>
 <div id="linear-and-logistic-regression-and-principal-component-analysis-using-boston-data" class="section level1">
@@ -522,6 +530,10 @@ pca_boston2$loadings</code></pre>
 ## Cumulative Var  0.643   0.714   0.786   0.857   0.929   1.000</code></pre>
 <p>The first and the second principal components reflects 46.8% and 11.8% of the total variations in the data, i.e. to get sense of the data we don’t need to look all the 14 dimensions rather few dimensions can explain the variations in the data.</p>
 <p>The loadings show the individual contributions of the variables to each dimensions. In the biplot, the angle between arrows shows how much they are correlated, the smaller the angle the stronger the correlation is. Also, the direction of the arrows shows to which PC-axis they are more important. The length of the arrows shows the standard deviations from the mean value. The principal component analysis in general reduced the dimensionality of the data. Forexample, the first 9 Principal Components alone explain more than 94% of the total variance in the data.</p>
+</div>
+<div id="conclusion-and-discussion" class="section level2">
+<h2>Conclusion and discussion</h2>
+<p>Linear and logistic regression analysis demonstrated that crime rate has a linear, positive, and statistically significant relation with index of accessibility to radial highways and percentage of lower status of population in the various towns(506) of Boston though the overall performance of the model is low (r square=0.42). Furthermore, the result showed that Index of accessibility to radial highways explains the varibabilies in crime rate more strongly than percentage of lower status of population in Boston. On the other hand, the two regression models(Linear and logistic), showed different results related to tax rate. The first model showed that tax rate has no statistically significant relation with crime rate while the second (logistic regression) model showed statistically significant relation(P=0.01). The difference in results between the two models can be related to the arbitrary selection of the high crime rate threshold (i.e. crime rate &gt; 50% is considered as high crime rate).</p>
 <hr />
 </div>
 </div>
